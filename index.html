@@ -2,34 +2,35 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc mừng 8/3 - Lá thư bất ngờ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>8/3 vui vẻ nhé mấy bạn</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Background image hoa anh đào đẹp */
-            background-image: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
+            background-image: url('https://scontent.fsgn5-8.fna.fbcdn.net/v/t1.15752-9/643857303_807636818316884_8114342973052929613_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeEE9PCP72zYDx784vUs37q26dKkNMQKP2vp0qQ0xAo_a4o1SjeoBB3qa4aBOQ_ZlHvctom67sWLPQi9Jj7CLfi0&_nc_ohc=E9atMj5cS2gQ7kNvwHK8iHT&_nc_oc=AdnGlhvM1-Hn4AjntnJXDODKeXyqoOtX_7Lztk4JGk1FbMHL7uwCivrf0kszqaMaWR_fMxDEfbOcJrTaVvqQBy81&_nc_zt=23&_nc_ht=scontent.fsgn5-8.fna&_nc_ss=8&oh=03_Q7cD4wF2FU37GVXa0Wu7qu7tPgJL72MMTDY7yxaM6f8FGrrCiQ&oe=69D34496');
+            background-size: 50% auto;
             background-position: center;
             background-attachment: fixed;
             background-repeat: no-repeat;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 15px;
-            /* Lớp phủ màu hồng nhẹ để chữ dễ đọc hơn */
+            min-height: 50vh;
+            width: 50vw;
             position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
         }
 
-        /* Lớp phủ overlay cho background */
+        /* Lớp phủ overlay mỏng hơn để thấy rõ background */
         body::before {
             content: '';
             position: fixed;
@@ -37,166 +38,160 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 230, 240, 0.3); /* lớp phủ hồng nhạt */
-            z-index: 0;
+            background-color: rgba(255, 230, 240, 0.15);
+            z-index: 1;
             pointer-events: none;
         }
 
+        /* Thiệp trong suốt hơn để lộ background */
         .card {
-            max-width: 600px;
+            max-width: 380px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 40px 40px 30px 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 4px #fff3f5 inset;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 35px 35px 30px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(255, 255, 255, 0.8) inset;
             text-align: center;
-            padding: 30px 25px 40px 25px;
+            padding: 18px 12px 22px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
             position: relative;
-            overflow: hidden;
-            border: 2px solid white;
-            z-index: 1;
-            cursor: grab; /* Thêm cursor grab để biểu thị có thể kéo */
-            user-select: none; /* Ngăn chọn text khi kéo */
-            transition: box-shadow 0.2s; /* Giữ lại transition cho đẹp */
+            cursor: grab;
+            user-select: none;
+            z-index: 10;
+            transition: box-shadow 0.2s;
+            margin: auto;
+            touch-action: none;
+            backdrop-filter: blur(12px) brightness(1.1);
         }
 
-        .card:active {
-            cursor: grabbing; /* Đổi cursor khi đang kéo */
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 4px #fff3f5 inset; /* Hiệu ứng khi kéo */
+        .card.dragging {
+            cursor: grabbing;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 3px white inset;
+            transition: none;
+            opacity: 0.9;
         }
-        
 
-        /* Hiệu ứng hoa rơi nền */
+        /* Hiệu ứng hoa rơi mờ hơn để không lấn át background */
         .flower-bg {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 2;
         }
 
         .flower {
             position: absolute;
-            color: rgba(255, 200, 220, 0.5);
+            color: rgba(255, 210, 230, 0.5);
             font-size: 24px;
             user-select: none;
             animation: fall linear infinite;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
         }
 
         @keyframes fall {
-            0% { transform: translateY(-10%) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(-10%) rotate(0deg); opacity: 0.5; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.1; }
         }
 
-        /* Nội dung chính */
+        /* Nội dung thiệp */
         .content {
             position: relative;
-            z-index: 10;
+            z-index: 11;
             display: flex;
             flex-direction: column;
         }
 
-        /* Phần avatar và tiêu đề - ĐƯA LÊN TRÊN CÙNG */
-        .top-section {
-            order: 1;
-            margin-bottom: 20px;
-        }
-
         h1 {
-            font-size: 3.2rem;
+            font-size: 2.3rem;
             color: #d43f5e;
-            text-shadow: 2px 2px 0 #ffe6eb, 4px 4px 0 rgba(255, 105, 135, 0.3);
-            margin-bottom: 5px;
-            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.8), 4px 4px 0 rgba(255, 105, 135, 0.2);
+            margin-bottom: 2px;
+            letter-spacing: 1px;
             font-weight: 900;
+            line-height: 1.2;
         }
 
         .sub-title {
-            font-size: 1.7rem;
+            font-size: 1.2rem;
             font-weight: 600;
             background: linear-gradient(135deg, #c0395f, #e6718b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);
         }
 
         .avatar {
-            width: 150px;
-            height: 150px;
-            margin: 10px auto 15px;
-            background: #ffe2e7;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 8px;
+            background: rgba(255, 226, 231, 0.7);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 12px 25px #ffb6c1, 0 0 0 5px white;
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.5), 0 0 0 4px white;
             transition: 0.3s;
+            backdrop-filter: blur(5px);
         }
 
         .avatar svg {
-            width: 100px;
-            height: 100px;
+            width: 65px;
+            height: 65px;
             fill: #b3435f;
         }
 
-        .avatar:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 30px #faa0ae;
-        }
-
-        /* Phần lời chúc ở giữa */
-        .middle-section {
-            order: 2;
+        .avatar:active {
+            transform: scale(0.97);
         }
 
         .message {
-            font-size: 1.25rem;
-            color: #4a2c2f;
-            background: #fff0f2ee;
-            padding: 20px 18px;
-            border-radius: 50px 50px 50px 10px;
-            margin: 15px 0 25px;
-            line-height: 1.6;
-            box-shadow: 0 8px 12px #ffd9df;
-            border-left: 6px solid #ff7b9c;
+            font-size: 0.95rem;
+            color: #3a1e22;
+            background: rgba(255, 240, 242, 0.75);
+            padding: 12px 12px;
+            border-radius: 25px 25px 25px 10px;
+            margin: 8px 0 12px;
+            line-height: 1.5;
+            box-shadow: 0 5px 12px rgba(255, 150, 170, 0.3);
+            border-left: 4px solid #ff7b9c;
             font-weight: 500;
             text-align: left;
             backdrop-filter: blur(5px);
         }
 
-        /* Phần chữ ký ở giữa */
         .signature {
-            margin: 20px 0 25px;
-            font-size: 1.2rem;
+            margin: 10px 0 10px;
+            font-size: 0.95rem;
             font-style: italic;
             color: #a6576a;
             border-top: 2px solid #ffb6c9;
-            padding-top: 15px;
+            padding-top: 8px;
         }
 
         .heart {
             color: #ff4d6d;
-            font-size: 2rem;
+            font-size: 1.3rem;
             line-height: 0.8;
         }
 
-        /* Khu vực LÁ THƯ - ĐƯA XUỐNG DƯỚI CÙNG */
         .bottom-section {
-            order: 3;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .letter-area {
-            background: rgba(255, 240, 217, 0.9);
-            backdrop-filter: blur(5px);
-            border-radius: 80px 80px 30px 30px;
-            padding: 20px 15px 25px;
-            border: 2px dashed #ff98a8;
+            background: rgba(255, 240, 217, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 45px 45px 25px 25px;
+            padding: 12px 8px 15px;
+            border: 2px dashed rgba(255, 152, 168, 0.8);
             transition: 0.4s;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .letter-area:active {
@@ -204,57 +199,62 @@
         }
 
         .letter-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            filter: drop-shadow(2px 2px 2px rgba(190, 70, 90, 0.3));
+            font-size: 1.4rem;
+            margin-bottom: 3px;
+            filter: drop-shadow(2px 2px 3px rgba(190, 70, 90, 0.2));
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            color: #b83b56;
+            font-weight: 600;
         }
 
         .letter-icon {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             transition: 0.3s;
-            filter: drop-shadow(0 8px 10px #ffa5b9);
+            filter: drop-shadow(0 5px 8px #ffa5b9);
         }
 
         .click-hint {
-            font-size: 1.1rem;
+            font-size: 0.85rem;
             color: #b3435f;
-            background: #ffe9ee;
-            padding: 8px 20px;
+            background: rgba(255, 233, 238, 0.8);
+            padding: 4px 12px;
             border-radius: 50px;
             display: inline-block;
-            margin: 10px 0;
+            margin: 3px 0;
             font-weight: 500;
             animation: pulse 1.5s infinite;
+            backdrop-filter: blur(5px);
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); background: #ffe1e8; }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); background: rgba(255, 225, 232, 0.8); }
+            50% { transform: scale(1.02); background: rgba(255, 215, 225, 0.9); }
+            100% { transform: scale(1); background: rgba(255, 225, 232, 0.8); }
         }
 
         .letter-content {
-            background: #fee1e7;
-            border-radius: 35px;
-            padding: 25px;
-            margin-top: 20px;
-            font-size: 1.3rem;
+            background: rgba(254, 225, 231, 0.85);
+            border-radius: 22px;
+            padding: 15px 10px;
+            margin-top: 10px;
+            font-size: 0.95rem;
             color: #b83b56;
             border: 3px solid white;
-            box-shadow: inset 0 0 15px #ffe2ed, 0 10px 10px rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 10px #ffe2ed, 0 5px 8px rgba(0,0,0,0.03);
             transform: scale(0);
             opacity: 0;
             transition: 0.25s;
-            min-height: 150px;
+            min-height: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            line-height: 1.6;
+            line-height: 1.5;
+            backdrop-filter: blur(5px);
         }
 
         .letter-content.show {
@@ -263,64 +263,68 @@
         }
 
         .letter-content span {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
         }
 
-        /* responsive */
-        @media (max-width: 450px) {
-            h1 { font-size: 2.5rem; }
-            .sub-title { font-size: 1.3rem; }
-            .avatar { width: 120px; height: 120px; }
-            .avatar svg { width: 80px; height: 80px; }
-            .letter-icon { font-size: 2.8rem; }
-            .letter-content { font-size: 1.1rem; }
+        /* Điều chỉnh cho màn hình nhỏ */
+        @media (max-width: 380px) {
+            h1 { font-size: 2rem; }
+            .sub-title { font-size: 1rem; }
+            .avatar { width: 85px; height: 85px; }
+            .avatar svg { width: 55px; height: 55px; }
+            .message { font-size: 0.85rem; padding: 10px 8px; }
+            .letter-title { font-size: 1.2rem; }
+            .letter-icon { font-size: 2rem; }
+            .card { padding: 12px 8px 18px; }
+        }
+
+        /* Hướng dẫn kéo cho mobile */
+        .drag-hint {
+            font-size: 0.75rem;
+            color: #c95a73;
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <!-- Hoa rơi nền -->
-        <div class="flower-bg" id="flowerContainer"></div>
-
+    <div class="flower-bg" id="flowerContainer"></div>
+    
+    <div class="card" id="draggableCard">
         <div class="content">
-            <!-- PHẦN TRÊN CÙNG: Avatar và tiêu đề -->
             <div class="top-section">
                 <h1>🌷 8/3 🌷</h1>
-                <div class="sub-title">✨ Dành tặng các bạn nữ 12A1 2952 ✨</div>
-
-                <!-- Icon avatar dễ thương - TO HƠN VÀ NỔI BẬT Ở TRÊN -->
+                <div class="sub-title">✨ Dành tặng các cô gái 12A1 ✨</div>
                 <div class="avatar">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 1.88.68 3.58 1.8 4.89L12 22l5.2-8.11A6.978 6.978 0 0019 9c0-3.87-3.13-7-7-7zm0 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
                     </svg>
                 </div>
+                <div class="drag-hint">👆 Kéo thả thiệp để thấy background đẹp hơn</div>
             </div>
 
-            <!-- PHẦN GIỮA: Lời chúc và chữ ký -->
             <div class="middle-section">
-                <!-- Lời chúc ý nghĩa -->
                 <div class="message">
-                     
-                    Chúc các bạn luôn vui tươi, xinh đẹp và hạnh phúc. Cảm ơn vì đã là một nửa tuyệt vời của thế giới này! 
+                    🌸 Chúc các cô gái 12A1 luôn xinh đẹp, hạnh phúc và tỏa sáng. Cảm ơn các bạn vì đã là một nửa tuyệt vời của thế giới này! :^))
                 </div>
-
                 <div class="signature">
                     <span class="heart">❤️</span> Ngàn lời yêu thương, gửi tặng bạn! <span class="heart">❤️</span>
                 </div>
             </div>
 
-            <!-- PHẦN DƯỚI CÙNG: Lá thư bí mật -->
             <div class="bottom-section">
                 <div class="letter-area" id="letterArea">
                     <div class="letter-title">
                         <span class="letter-icon" id="letterIcon">💌</span>
-                        LÁ THƯ TẶNG BẠN
+                        LÁ THƯ BÍ MẬT
                     </div>
                     <div class="click-hint" id="clickHint">👉 Bấm vào lá thư để mở 👈</div>
-                    <div class="letter-content" id="letterContent">
-                        <!-- Nội dung sẽ được thay bằng JS khi bấm -->
-                    </div>
+                    <div class="letter-content" id="letterContent"></div>
                 </div>
             </div>
         </div>
@@ -328,79 +332,202 @@
 
     <script>
         (function() {
-            // --- Tạo hiệu ứng hoa rơi ---
+            // Tạo hiệu ứng hoa rơi - giảm số lượng và độ đậm
             const flowerContainer = document.getElementById('flowerContainer');
             const flowers = ['🌸', '🌼', '🌺', '🌷', '🌹', '🌸', '🌼', '🌷'];
-            for (let i = 0; i < 20; i++) {
+            
+            // Giảm số lượng hoa để background rõ hơn
+            const flowerCount = window.innerWidth <= 768 ? 10 : 20;
+            
+            for (let i = 0; i < flowerCount; i++) {
                 const flower = document.createElement('div');
                 flower.className = 'flower';
                 flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
                 flower.style.left = Math.random() * 100 + '%';
-                flower.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                flower.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                flower.style.animationDelay = Math.random() * -10 + 's';
+                flower.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                flower.style.fontSize = (Math.random() * 20 + 12) + 'px';
+                flower.style.animationDelay = Math.random() * -15 + 's';
+                flower.style.opacity = Math.random() * 0.3 + 0.1;
                 flowerContainer.appendChild(flower);
             }
 
-            // --- Xử lý bấm vào lá thư ---
+            // Xử lý kéo thả thiệp
+            const card = document.getElementById('draggableCard');
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            card.style.position = 'absolute';
+            card.style.transform = 'none';
+            
+            // Căn giữa ban đầu nhưng lùi lên trên một chút để thấy background
+            function positionCard() {
+                const rect = card.getBoundingClientRect();
+                card.style.left = (window.innerWidth / 2 - rect.width / 2) + 'px';
+                card.style.top = (window.innerHeight / 2 - rect.height / 2 - 10) + 'px'; // Nhích lên 10px
+            }
+            
+            if (!card.style.left || card.style.left === 'auto') {
+                positionCard();
+            }
+
+            // Mouse events
+            card.addEventListener('mousedown', startDragging);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDragging);
+
+            // Touch events
+            card.addEventListener('touchstart', startDraggingTouch, { passive: false });
+            document.addEventListener('touchmove', dragTouch, { passive: false });
+            document.addEventListener('touchend', stopDragging);
+            document.addEventListener('touchcancel', stopDragging);
+
+            // Ngăn cuộn trang khi kéo
+            document.addEventListener('touchmove', function(e) {
+                if (isDragging) e.preventDefault();
+            }, { passive: false });
+
+            function startDragging(e) {
+                e.preventDefault();
+                isDragging = true;
+                card.classList.add('dragging');
+                
+                const rect = card.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+            }
+
+            function startDraggingTouch(e) {
+                e.preventDefault();
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    card.classList.add('dragging');
+                    
+                    const rect = card.getBoundingClientRect();
+                    offsetX = e.touches[0].clientX - rect.left;
+                    offsetY = e.touches[0].clientY - rect.top;
+                }
+            }
+
+            function drag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+
+                let clientX = e.clientX;
+                let clientY = e.clientY;
+
+                updateCardPosition(clientX, clientY);
+            }
+
+            function dragTouch(e) {
+                if (!isDragging || e.touches.length !== 1) return;
+                e.preventDefault();
+
+                let clientX = e.touches[0].clientX;
+                let clientY = e.touches[0].clientY;
+
+                updateCardPosition(clientX, clientY);
+            }
+
+            function updateCardPosition(clientX, clientY) {
+                let newLeft = clientX - offsetX;
+                let newTop = clientY - offsetY;
+
+                // Giới hạn trong màn hình nhưng linh hoạt hơn
+                const cardWidth = card.offsetWidth;
+                const cardHeight = card.offsetHeight;
+                
+                newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - cardWidth));
+                newTop = Math.max(0, Math.min(newTop, window.innerHeight - cardHeight));
+
+                card.style.left = newLeft + 'px';
+                card.style.top = newTop + 'px';
+            }
+
+            function stopDragging() {
+                if (isDragging) {
+                    isDragging = false;
+                    card.classList.remove('dragging');
+                }
+            }
+
+            // Xử lý lá thư
             const letterArea = document.getElementById('letterArea');
             const letterIcon = document.getElementById('letterIcon');
             const clickHint = document.getElementById('clickHint');
             const letterContent = document.getElementById('letterContent');
             let isOpened = false;
 
-            // Những lời chúc bất ngờ bên trong lá thư
             const secretMessages = [
-                { icon: '💖', text: 'Chúc em luôn ngọt ngào và hạnh phúc như những viên kẹo!' },
-                { icon: '🌟', text: 'Em là ánh sáng rực rỡ nhất trong cuộc đời anh. Yêu em!' },
-                { icon: '🌸', text: 'Cảm ơn em đã đến và thổi hồn vào thế giới của anh!' },
-                { icon: '🌹', text: 'Tặng em đóa hồng này, và cả trái tim anh nữa!' },
-                { icon: '🎀', text: 'Hôm nay và mãi mãi, em luôn là đặc biệt nhất!' },
-                { icon: '💝', text: 'Chúc em luôn tươi cười - nụ cười của em là món quà quý giá!' },
-                { icon: '✨', text: '8/3 vui vẻ nhé công chúa của anh!' },
-                { icon: '🎂', text: 'Em ngọt ngào hơn cả bánh kem, đáng yêu hơn cả nắng mai!' },
-                { icon: '🐱', text: 'Dễ thương như mèo con, đáng yêu như nắng mới!' },
-                { icon: '🍰', text: 'Tặng em chiếc bánh ngọt, ngọt ngào như tình yêu anh dành cho em!' }
+                { icon: '💖', text: 'Chúc bạn luôn ngọt ngào và hạnh phúc!' },
+                { icon: '🌟', text: 'Bạn là ánh sáng rực rỡ nhất lớp 12A1!' },
+                { icon: '🌸', text: 'Mãi tươi trẻ và xinh đẹp như hoa nhé!' },
+                { icon: '💕', text: 'Cảm ơn bạn vì là một phần tuyệt vời!' },
+                { icon: '🌺', text: 'Chúc bạn có ngày 8/3 thật ý nghĩa!' }
             ];
 
-            letterArea.addEventListener('click', function() {
-                // Random một lời chúc
+            letterArea.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
                 const randomMsg = secretMessages[Math.floor(Math.random() * secretMessages.length)];
                 
                 if (!isOpened) {
-                    // Lần đầu mở
                     letterContent.innerHTML = `<span>${randomMsg.icon}</span> ${randomMsg.text}`;
                     letterContent.classList.add('show');
-                    
-                    // Đổi icon lá thư thành icon đã mở
                     letterIcon.textContent = '💌✨';
-                    
-                    // Ẩn dòng chữ hướng dẫn
                     clickHint.style.opacity = '0';
                     clickHint.style.transition = '0.3s';
-                    
                     isOpened = true;
                 } else {
-                    // Những lần bấm sau: đổi lời chúc khác (vẫn giữ trạng thái mở)
                     letterContent.innerHTML = `<span>${randomMsg.icon}</span> ${randomMsg.text}`;
+                }
+            });
+
+            // Touch event cho letterArea
+            letterArea.addEventListener('touchstart', function(e) {
+                e.stopPropagation();
+            }, { passive: true });
+
+            // Xử lý resize
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    const cardWidth = card.offsetWidth;
+                    const cardHeight = card.offsetHeight;
+                    const currentLeft = parseInt(card.style.left) || 0;
+                    const currentTop = parseInt(card.style.top) || 0;
                     
-                    // Thêm hiệu ứng nhấp nháy nhẹ
-                    letterContent.style.transform = 'scale(0.95)';
-                    setTimeout(() => letterContent.style.transform = 'scale(1)', 150);
-                }
+                    let newLeft = currentLeft;
+                    let newTop = currentTop;
+                    
+                    if (currentLeft + cardWidth > window.innerWidth) {
+                        newLeft = window.innerWidth - cardWidth;
+                    }
+                    if (currentLeft < 0) {
+                        newLeft = 0;
+                    }
+                    if (currentTop + cardHeight > window.innerHeight) {
+                        newTop = window.innerHeight - cardHeight;
+                    }
+                    if (currentTop < 0) {
+                        newTop = 0;
+                    }
+                    
+                    card.style.left = newLeft + 'px';
+                    card.style.top = newTop + 'px';
+                }, 100);
             });
 
-            // Thêm hiệu ứng hover cho lá thư
-            letterArea.addEventListener('mouseenter', function() {
-                if (!isOpened) {
-                    letterIcon.style.transform = 'scale(1.1) rotate(5deg)';
-                }
+            // Thêm khả năng double click để về giữa
+            card.addEventListener('dblclick', function() {
+                positionCard();
             });
 
-            letterArea.addEventListener('mouseleave', function() {
-                letterIcon.style.transform = 'scale(1) rotate(0deg)';
+            card.addEventListener('touchend', function(e) {
+                // Nếu là tap ngắn (không kéo) thì không làm gì
+                if (!isDragging) return;
             });
-
         })();
     </script>
 </body>
